@@ -1,0 +1,7 @@
+{
+    "email": "test@example.com",
+    "owner": "god",
+    "dag_name": "test1",
+    "interval": "@hourly",
+    "flow": "base >> Cognito_Reader"
+}
