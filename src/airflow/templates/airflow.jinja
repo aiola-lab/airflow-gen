@@ -33,11 +33,14 @@ default_args = {
     default_args=default_args,
     description='IDE Generated dag',
     schedule_interval='{{interval}}',
-    start_date='{{current_date}}',
+    start_date={{start_date}},
     catchup=False,
     tags=['generated'])
 def {{dag_name}}():
 {% for file in files %}
-  {{file.name}} = BashOperator(task_id='{{file.name}}', bash_command=f'{sh_command} {{file.path}} out_{{file.path}}')
+    {{file.name}} = BashOperator(task_id='{{file.name}}', bash_command=f'{sh_command} {{file.path}} out_{{file.path}}')
 {% endfor %}
-  {{flow}}
+    {{flow}}
+
+
+dag = {{dag_name}}()
