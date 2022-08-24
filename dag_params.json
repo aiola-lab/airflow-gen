@@ -1,8 +1,7 @@
 {
     "email": "test@example.com",
     "owner": "god",
-    "dag_name": "test1",
     "interval": "@hourly",
     "start_date": "datetime(2022, 1, 1)",
-    "flow": "base >> Cognito_Reader"
+    "flows": ["base >> Cognito_Reader", "a >> b"]
 }

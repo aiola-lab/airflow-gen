@@ -40,7 +40,8 @@ def {{dag_name}}():
 {% for file in files %}
     {{file.name}} = BashOperator(task_id='{{file.name}}', bash_command=f'{sh_command} {{file.path}} out_{{file.path}}')
 {% endfor %}
+{% for flow in flows %}
     {{flow}}
-
+{% endfor %}
 
 dag = {{dag_name}}()
