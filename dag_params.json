@@ -3,5 +3,7 @@
     "owner": "god",
     "interval": "@hourly",
     "start_date": "datetime(2022, 1, 1)",
-    "flows": ["base >> Cognito_Reader", "a >> b"]
+    "retries": 3,
+    "retry_delay": "timedelta(days=1)",
+    "flows": ["Cognito_Reader"]
 }

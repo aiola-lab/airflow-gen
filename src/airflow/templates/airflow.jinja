@@ -11,8 +11,8 @@ default_args = {
     'email': ['{{email}}'],
     'email_on_failure': True,
     'email_on_retry': False,
-    'retries': 7,
-    'retry_delay': timedelta(days=1),
+    'retries': {{retries}},
+    'retry_delay': {{retry_delay}},
     # 'queue': 'bash_queue',
     # 'pool': 'backfill',
     # 'priority_weight': 10,
@@ -38,7 +38,7 @@ default_args = {
     tags=['generated'])
 def {{dag_name}}():
 {% for file in files %}
-    {{file.name}} = BashOperator(task_id='{{file.name}}', bash_command=f'{sh_command} {{file.path}} out_{{file.path}}')
+    {{file.name}} = BashOperator(task_id='{{file.name}}', bash_command=f'{sh_command} /opt/airflow/notebooks/{{file.path}} /opt/airflow/notebooks/out_{{file.path}}')
 {% endfor %}
 {% for flow in flows %}
     {{flow}}
