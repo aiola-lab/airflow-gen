@@ -1,0 +1,6 @@
+Type: Jupyter Notebook Extension
+Compatibility: Jupyter 4.x, 5.x
+Name: Generate Button
+Main: main.js
+Description: adds a generate button for creating airflow DAG python script to run a jupyter notebook inside airflow
+Icon: generate.png

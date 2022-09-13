@@ -1,0 +1,9 @@
+{
+    "email": "test@example.com",
+    "owner": "god",
+    "interval": "@hourly",
+    "start_date": "datetime(2022, 1, 1)",
+    "retries": 3,
+    "retry_delay": "timedelta(days=1)",
+    "flows": ["Cognito_Reader"]
+}

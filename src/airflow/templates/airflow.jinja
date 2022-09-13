@@ -1,0 +1,47 @@
+from datetime import datetime, timedelta
+
+from airflow.operators.bash import BashOperator
+from airflow.decorators import dag
+
+sh_command = 'papermill'
+
+default_args = {
+    'owner': '{{owner}}',
+    'depends_on_past': False,
+    'email': ['{{email}}'],
+    'email_on_failure': True,
+    'email_on_retry': False,
+    'retries': {{retries}},
+    'retry_delay': {{retry_delay}},
+    # 'queue': 'bash_queue',
+    # 'pool': 'backfill',
+    # 'priority_weight': 10,
+    # 'end_date': datetime(2016, 1, 1),
+    # 'wait_for_downstream': False,
+    # 'dag': dag,
+    # 'sla': timedelta(minutes=10),
+    # 'execution_timeout': timedelta(seconds=300),
+    # 'on_failure_callback': some_function,
+    # 'on_success_callback': some_other_function,
+    # 'on_retry_callback': another_function,
+    # 'sla_miss_callback': yet_another_function,
+    # 'trigger_rule': 'all_success'
+}
+
+
+@dag( 
+    default_args=default_args,
+    description='IDE Generated dag',
+    schedule_interval='{{interval}}',
+    start_date={{start_date}},
+    catchup=False,
+    tags=['generated'])
+def {{dag_name}}():
+{% for file in files %}
+    {{file.name}} = BashOperator(task_id='{{file.name}}', bash_command=f'{sh_command} /opt/airflow/notebooks/{{file.path}} /opt/airflow/notebooks/out_{{file.path}}')
+{% endfor %}
+{% for flow in flows %}
+    {{flow}}
+{% endfor %}
+
+dag = {{dag_name}}()
