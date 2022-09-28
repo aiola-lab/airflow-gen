@@ -32,10 +32,11 @@ def run_main(conf):
     os.makedirs(target_dir, exist_ok=True)
     with open(f"{target_dir}/{dag_name}.py", 'w') as dag:
         dag.write(template.render(conf, dag_name=dag_name, files=pynb_files, current_date=datetime.now()))
+    return f"Generated {dag_name}"
 # print(template.render(files=pynb_files, owner="land", email="land@airflow", interval='@hourly', current_date=datetime.now()))
 
 
 if __name__ == '__main__':
-    logging.debug(sys.argv)
+    # logging.debug(sys.argv)
     conf = json.loads(sys.argv[1])
-    run_main(conf)
+    logging.info(run_main(conf))

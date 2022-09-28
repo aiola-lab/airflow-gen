@@ -23,6 +23,8 @@
       IPython.keyboard_manager.disable();
       var button = $('<button/>').addClass('btn-primary').text('Generate').on('click', function () {
               function callback(out){
+                if(out)
+                alert('Generated DAG under `generated` directory');
                 console.log("OUT: "+ JSON.stringify(out));
               }
               var callbacks = { iopub: { output: callback } };
@@ -30,11 +32,10 @@
                 "email": $("#email").val(),
                 "owner": $("#owner").val(),
                 "retries": $("#retries").val(),
-                "use_all": $("#use_all").val(),
                 "s3_sensor_path": $("#s3_sensor_path").val(),
-                "retry_delay": "timedelta(days=1)",
+                "retry_delay": "timedelta("+$("#retry_delay").val()+"="+$("#retry_delay_num").val()+")",
                 "start_date": "datetime(2022, 1, 1)",
-                "interval": "@hourly",
+                "interval": $("#schedule_interval").val(),
                 "flow": $("#flow").val(),
               }
               config_str = JSON.stringify(config).replace('"', '\"');
@@ -47,6 +48,12 @@
       if(!config_added){
         show_config_form(button);
         config_added = true;
+      }else if(config_hidden){
+        $("#side_panel").show();
+        config_hidden=false;
+      }else{
+        $("#side_panel").hide();
+        config_hidden=true;
       }
       // if (config_hidden){
       //   $('#config').show();
@@ -68,30 +75,29 @@
     }
   };
   var show_config_form = function(button){
-      var body = $("<p align=center border='1' >");
-      body.append('<div id="side_panel">');
+      var body = $("<div style='width:800px; margin:0 auto;' id='side_panel' name='side_panel'>");
       body.append($("<h4/>").text("Do you want to generate DAG from this notebook?"))
       body.append(
         $(" \
             <form id='config' >\
-            <label for='email'>Email:</label>\
-            <input type='email' id='email' name='email'/>\
-            <label for='owner'>Owner:</label>\
-            <input type='text' id='owner' name='owner'/> <br/>\
+            <!--label for='email'>Email:</label-->\
+            <input type='hidden' id='email' value='dag@aiola.com' name='email'/>\
+            <!--label for='owner'>Owner:</label-->\
+            <input type='hidden' id='owner' value='aiola_dag_generator' name='owner'/> <br/>\
+            <label for='schedule_interval'>DAG Schedule interval:</label>\
+            <input type='text' id='schedule_interval' value='@daily'/></br>\
             <label for='retries'>Retries (between 1 and 5):</label>\
-            <input type='number' id='retries' name='retries' min='1' max='5'>\
+            <input type='number' id='retries' value=2 required name='retries' min='1' max='5'></br>\
             <label for='retry_delay'>Retries Delay:</label>\
-            <input type='number' id='retry_delay_num' name='retries' min='1' max='5'>\
-            <select type='number' id='retry_delay' name='retry_delay' min='1' max='5'>\
-              <option value='day'>days</option>\
-              <option value='hour'>houts</option>\
+            <input type='number' id='retry_delay_num' value='1' name='retries' min='1' max='5'>\
+            <select id='retry_delay' value='minute' name='retry_delay'>\
               <option value='minute'>minutes</option>\
+              <option value='hour'>hours</option>\
+              <option value='day'>days</option>\
             </select>\
             </br>\
-            <label for='s3_sensor_path'>S3 Sensor path (Optional)</label>\
-            <input type='text' id='s3_sensor_path' name='s3_sensor_path'/>\
-            <label for='use_all'>Use all notebooks for DAG?</label>\
-            <input type='checkbox' id='use_all' name='use_all' checked/><br/>\
+            <!--label for='s3_sensor_path'>S3 Sensor path (Optional)</label-->\
+            <input type='hidden' id='s3_sensor_path' name='s3_sensor_path'/>\
             </form> </div>\
           ")
       ).append(button)
